@@ -302,7 +302,7 @@ credentials="${INPUT_USER},"
 # Check if the password is empty and the SSH key is provided
 if [[ -z "${INPUT_PASS}" ]] && [[ -n "${INPUT_SSHKEY}" ]]; then
     echo "Using SSH key for SFTP connection"
-    settings+="set sftp:connect-program \"ssh -a -x -i ${INPUT_SSHKEY}\";"
+    settings+="set sftp:connect-program \"ssh -a -x -vvv -i ${INPUT_SSHKEY}\";"
 else
     echo "Using password for SFTP connection"
     credentials+=",${INPUT_PASS}"
