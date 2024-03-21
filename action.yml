@@ -14,7 +14,7 @@ inputs:
     required: true
   pass:
     description: 'The password to use for authentication'
-    required: true
+    required: false
   forceSSL:
     description: 'Refuse to send password in clear when server does not support SSL'
     required: false
