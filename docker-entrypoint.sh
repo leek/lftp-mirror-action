@@ -296,9 +296,9 @@ if is_true "${INPUT_RESTOREMTIME}"; then
 fi
 
 # Build the credentials string, including the password if provided
-credentials="${INPUT_USER}"
+credentials="${INPUT_USER},"
 if [[ -n "${INPUT_PASS}" ]]; then
-  credentials+=",${INPUT_PASS}"
+  credentials+="${INPUT_PASS}"
 fi
 
 # Transfer files via SFTP, using SSH keys if the password is not provided
