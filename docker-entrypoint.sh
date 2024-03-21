@@ -167,7 +167,7 @@ check_required_envs () {
   required_envs=(
     INPUT_HOST
     INPUT_USER
-    INPUT_PASS
+    # INPUT_PASS
   )
 
   for env in "${required_envs[@]}"; do
@@ -295,8 +295,14 @@ if is_true "${INPUT_RESTOREMTIME}"; then
   /usr/bin/python3 /usr/local/bin/git-restore-mtime --verbose
 fi
 
-# Transfer files via SFTP
-debug_run_cmd lftp -u "${INPUT_USER},${INPUT_PASS}" -p "${INPUT_PORT}" "sftp://${INPUT_HOST}" \
+# Build the credentials string, including the password if provided
+credentials="${INPUT_USER}"
+if [[ -n "${INPUT_PASS}" ]]; then
+  credentials+=",${INPUT_PASS}"
+fi
+
+# Transfer files via SFTP, using SSH keys if the password is not provided
+debug_run_cmd lftp -u "${credentials}" -p "${INPUT_PORT}" "sftp://${INPUT_HOST}" \
      -e "${settings} \
      mirror ${excluded_files} \
      ${flags} ${INPUT_LOCALDIR} ${INPUT_REMOTEDIR}; \
