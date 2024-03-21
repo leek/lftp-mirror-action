@@ -14,7 +14,8 @@
 # - `INPUT_HOST` — The hostname of the SFTP server (required)
 # - `INPUT_PORT` — The port of the SFTP server
 # - `INPUT_USER` — The username to use for authentication (required)
-# - `INPUT_PASS` — The password to use for authentication (required)
+# - `INPUT_PASS` — The password to use for authentication (optional)
+# - `INPUT_SSHKEY` — The SSH key to use for authentication (optional)
 # - `INPUT_FORCESSL` — Refuse to send password in clear when server does not support SSL
 # - `INPUT_VERIFYCERTIFICATE` — Verify server's certificate to be signed by a known Certificate Authority
 # - `INPUT_FINGERPRINT` — The key fingerprint of the host we want to connect to
@@ -296,9 +297,15 @@ if is_true "${INPUT_RESTOREMTIME}"; then
 fi
 
 # Build the credentials string, including the password if provided
-credentials="${INPUT_USER},"
-if [[ -n "${INPUT_PASS}" ]]; then
-  credentials+="${INPUT_PASS}"
+credentials="${INPUT_USER}"
+
+# Check if the password is empty and the SSH key is provided
+if [[ -z "${INPUT_PASS}" ]] && [[ -n "${INPUT_SSHKEY}" ]]; then
+    echo "Using SSH key for SFTP connection"
+    handle_setting "sftp:connect-program=\"ssh -a -x -i ${INPUT_SSHKEY}\""
+else
+    echo "Using password for SFTP connection"
+    credentials+=",${INPUT_PASS}"
 fi
 
 # Transfer files via SFTP, using SSH keys if the password is not provided

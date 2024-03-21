@@ -15,6 +15,10 @@ inputs:
   pass:
     description: 'The password to use for authentication'
     required: false
+  sshKey:
+    description: 'The path to the private key to use for authentication'
+    required: false
+    default: '~/.ssh/id_rsa'
   forceSSL:
     description: 'Refuse to send password in clear when server does not support SSL'
     required: false
