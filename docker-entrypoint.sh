@@ -297,7 +297,7 @@ if is_true "${INPUT_RESTOREMTIME}"; then
 fi
 
 # Build the credentials string, including the password if provided
-credentials="${INPUT_USER}"
+credentials="${INPUT_USER},"
 
 # Check if the password is empty and the SSH key is provided
 if [[ -z "${INPUT_PASS}" ]] && [[ -n "${INPUT_SSHKEY}" ]]; then
